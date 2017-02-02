@@ -11,6 +11,8 @@ from .station import MonitoringStation
 
 def rivers_with_station(stations):
   "Given a list of stations, returns all rivers (by name) with a monitoring station. Returns rivers as a set."
+  if type(stations) != list:
+    raise TypeError('input was not a list of stations')
   return {station.river for station in stations} #enters all rivers into a set
   
 def stations_by_river(stations):
