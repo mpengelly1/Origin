@@ -6,6 +6,7 @@ geographical data.
 # Import modules from other files
 from .utils import sorted_by_key
 from .station import MonitoringStation
+from haversine import haversine
 
 
 def rivers_with_station(stations):
@@ -15,7 +16,7 @@ def rivers_with_station(stations):
         raise TypeError('input was not a list of stations')
     return {station.river for station in stations}  # enters all rivers into a set
 
-
+  
 def stations_by_river(stations):
     "Assigns rivers as keys to stations specified within a python dict containing lists."
 
@@ -28,3 +29,17 @@ def stations_by_river(stations):
         else:
             river_dict[station.river] = [station.name]
     return river_dict #return dict of lists
+
+  
+def stations_by_distance(stations, p):
+    """Sorts stations by distance. Stations is a list of stations, p is a tuple (latitude, longitude).
+    The function returns a list of tuples (station, distance)"""
+
+    station_distance = []
+
+    for s in stations:
+        #s.coord
+        distance = haversine(s.coord, p)
+        station_distance.append((s, distance))
+
+    return sorted_by_key(station_distance, 1)
