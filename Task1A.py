@@ -5,7 +5,10 @@ def run():
     """Requirements for Task 1A"""
 
     # Build list of stations
-    stations = build_station_list()
+    try:
+        stations = build_station_list()
+    except:
+        raise RuntimeError('Failed to build list of stations')
 
     # Count number of stations and print
     print("Number of stations: {}".format(len(stations)))
