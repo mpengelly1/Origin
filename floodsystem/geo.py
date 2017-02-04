@@ -82,24 +82,21 @@ def check_station_input(stations):
         print("ValueError: Please enter a list of stations")
     pass
 
+
 def stations_within_radius(stations, centre, r):
     """sorts stations into distance and lists stations within a certain radius. Stations is a list of stations,
     centre is a coordinate which should be taken as the centre of a circle, and r is the distance in km in which the
     stations have to be from the centre of the circle."""
 
 
-    check_station_input(stations)
+    station_dist = stations_by_distance(stations, centre)
+    station_rad = []
 
-    station_distance = []
+    for s in station_dist:
 
-    for s in stations:
-        # s.coord
-        distance = haversine(s.coord, centre)
-        station_distance.append((s, distance))
+        dist = station_dist[:][1]
 
-        stations_in_radius = []
+        if dist < r:
+            station_rad.append((s, dist))
 
-        if station_distance[:][1] < r:
-            stations_in_radius.append((s, distance))
-
-    return sorted_by_key(list, 1)
+    return station_rad
