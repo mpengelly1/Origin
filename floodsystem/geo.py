@@ -89,31 +89,14 @@ def stations_within_radius(stations, centre, r):
     stations have to be from the centre of the circle."""
 
 
-    #station_dist = stations_by_distance(stations, centre)
-    #station_rad = []
-
-    #for s in station_dist:
-
-    #    dist = station_dist
-
-    #    if dist < r:
-    #        station_rad.append((s, dist))
-
-    #return station_rad
-
     check_station_input(stations)
 
-    station_distance = []
     station_rad = []
 
     for s in stations:
         # s.coord
         distance = haversine(s.coord, centre)
-        station_distance.append((s, distance))
-
-    for s in station_distance:
-        dist = station_distance[:][1]
-        if dist < r:
-            station_rad.append((s, dist))
+        if distance < r:
+            station_rad.append((s, distance))
 
     return station_rad
