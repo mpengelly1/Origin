@@ -9,3 +9,8 @@ def test_stations_by_distance():
     assert list[0][0].name == "Cambridge Jesus Lock"
     assert list[0][1] == 0.8402364350834995
 
+def test_stations_within_radius():
+    stations = floodsystem.stationdata.build_station_list()
+    list = floodsystem.geo.stations_within_radius(stations, (52.2053, 0.1218), 10)
+
+    assert "Bin Brook" in list
