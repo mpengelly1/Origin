@@ -5,7 +5,7 @@ geographical data.
 
 # Import modules from other files
 from .utils import sorted_by_key
-from .station import MonitoringStation,check_station_input
+from .station import check_station_input
 from .haversine import haversine
 
 
@@ -62,7 +62,10 @@ def stations_by_distance(stations, p):
 
     #check input
     check_station_input(stations)
-
+    if p != tuple:
+        raise TypeError('Please enter a tuple with coordinates')
+    elif len(p) != 2:
+        raise ValueError('Please enter a coordinate')
 
     station_distance = []
 
