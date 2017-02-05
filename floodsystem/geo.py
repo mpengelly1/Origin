@@ -97,6 +97,6 @@ def stations_within_radius(stations, centre, r):
         # s.coord
         distance = haversine(s.coord, centre)
         if distance < r:
-            station_rad.append((s, distance))
+            station_rad.append(s.name)
 
-    return station_rad
+    return sorted_by_key(station_rad, 0)
