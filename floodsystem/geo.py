@@ -29,7 +29,8 @@ def stations_by_river(stations):
     return river_dict #return dict of lists
 
 def rivers_by_station_number(stations, N):
-    "Determines the N rivers with the greatest number of monitoring stations. Returns list of tuples sorted by number of stations"
+    """Determines the N rivers with the greatest number of monitoring stations.
+    Returns list of tuples sorted by number of stations"""
 
     #Checks input
     check_station_input(stations)
@@ -81,8 +82,14 @@ def stations_within_radius(stations, centre, r):
     centre is a coordinate which should be taken as the centre of a circle, and r is the distance in km in which the
     stations have to be from the centre of the circle."""
 
-
+    #Check input
     check_station_input(stations)
+    if centre != tuple:
+        raise TypeError('Please enter a tuple with coordinates')
+    elif len(centre) != 2:
+        raise ValueError('Please enter a coordinate')
+    if r != float or int
+        raise TypeError('please enter a valid distance in km')
 
     station_rad = []
 
