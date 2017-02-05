@@ -88,7 +88,7 @@ def stations_within_radius(stations, centre, r):
         raise TypeError('Please enter a tuple with coordinates')
     elif len(centre) != 2:
         raise ValueError('Please enter a coordinate')
-    if type(r) != float or type(r) != int:
+    if type(r) != float and type(r) != int:
         raise TypeError('please enter a valid distance in km')
 
     station_rad = []
