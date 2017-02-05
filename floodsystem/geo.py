@@ -73,3 +73,20 @@ def stations_by_distance(stations, p):
 
     return sorted_by_key(station_distance, 1)
 
+def stations_within_radius(stations, centre, r):
+    """sorts stations into distance and lists stations within a certain radius. Stations is a list of stations,
+    centre is a coordinate which should be taken as the centre of a circle, and r is the distance in km in which the
+    stations have to be from the centre of the circle."""
+
+
+    check_station_input(stations)
+
+    station_rad = []
+
+    for s in stations:
+        # s.coord
+        distance = haversine(s.coord, centre)
+        if distance < r:
+            station_rad.append(s.name)
+
+    return sorted_by_key(station_rad, 0)
