@@ -1,4 +1,6 @@
-import floodsystem
+import floodsystem.stationdata
+import floodsystem.geo
+import floodsystem.station
 
 #Build list of stations for tests
 stations = floodsystem.stationdata.build_station_list()
@@ -21,7 +23,7 @@ def test_rivers_by_station():
     assert len(unique_values) == 9
 
 def test_rivers_with_station():
-    rivers = rivers_with_station(stations)  # create set of all rivers
+    rivers = floodsystem.geo.rivers_with_station(stations)  # create set of all rivers
     assert len(rivers) > 800
 
     rivers_list = list(rivers)
@@ -29,17 +31,17 @@ def test_rivers_with_station():
     assert rivers_list[0] == 'Addlestone Bourne'
     assert rivers_list[-1] == 'Yeading Brook West'
 
-    River_Aire = list(stations_by_river(stations)['River Aire'])
+    River_Aire = list(floodsystem.geo.stations_by_river(stations)['River Aire'])
     River_Aire.sort()
     assert River_Aire[0] == 'Airmyn'
     assert River_Aire[-1] == 'Stockbridge'
 
-    River_Cam = list(stations_by_river(stations)['River Cam'])
+    River_Cam = list(floodsystem.geo.stations_by_river(stations)['River Cam'])
     River_Cam.sort()
     assert River_Cam[0] == 'Cam'
     assert River_Cam[-1] == 'Weston Bampfylde'
 
-    Thames = list(stations_by_river(stations)['Thames'])
+    Thames = list(floodsystem.geo.stations_by_river(stations)['Thames'])
     Thames.sort()
     assert Thames[0] == 'Abingdon Lock'
     assert Thames[-1] == 'Windsor Park'
