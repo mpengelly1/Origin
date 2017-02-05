@@ -5,7 +5,7 @@ geographical data.
 
 # Import modules from other files
 from .utils import sorted_by_key
-from .station import MonitoringStation
+from .station import MonitoringStation,check_station_input
 from .haversine import haversine
 
 
@@ -73,11 +73,3 @@ def stations_by_distance(stations, p):
 
     return sorted_by_key(station_distance, 1)
 
-def check_station_input(stations):
-    if type(stations) != list:
-        raise TypeError('input was not a list of stations')
-    try:
-        stations[1].river
-    except Exception:
-        print("ValueError: Please enter a list of stations")
-    pass
