@@ -16,48 +16,50 @@ def build_station_list(use_cache=True):
     available.
 
     """
+    try:
+     # Fetch station data
+        data = datafetcher.fetch_station_data(use_cache)
 
-    # Fetch station data
-    data = datafetcher.fetch_station_data(use_cache)
+        # Build list of MonitoringStation objects
+        stations = []
+        for e in data["items"]:
+            # Extract town string (not always available)
+            town = None
+            if 'town' in e:
+                town = e['town']
 
-    # Build list of MonitoringStation objects
-    stations = []
-    for e in data["items"]:
-        # Extract town string (not always available)
-        town = None
-        if 'town' in e:
-            town = e['town']
+            # Extract river name (not always available)
+            river = None
+            if 'riverName' in e:
+                river = e['riverName']
 
-        # Extract river name (not always available)
-        river = None
-        if 'riverName' in e:
-            river = e['riverName']
+            # Attempt to extract typical range (low, high)
+            try:
+                typical_range = (float(e['stageScale']['typicalRangeLow']),
+                                 float(e['stageScale']['typicalRangeHigh']))
+            except:
+                typical_range = None
 
-        # Attempt to extract typical range (low, high)
-        try:
-            typical_range = (float(e['stageScale']['typicalRangeLow']),
-                             float(e['stageScale']['typicalRangeHigh']))
-        except:
-            typical_range = None
+            try:
+                # Create mesure station object if all required data is
+                # available, and add to list
+                s = MonitoringStation(station_id=e['@id'],
+                                      measure_id=e['measures'][-1]['@id'],
+                                      label=e['label'],
+                                      coord=(float(e['lat']),
+                                             float(e['long'])),
+                                      typical_range=typical_range,
+                                      river=river,
+                                      town=town)
+                stations.append(s)
+            except:
+                # Not all required data on the station was available, so
+                # skip over
+                pass
 
-        try:
-            # Create mesure station object if all required data is
-            # available, and add to list
-            s = MonitoringStation(station_id=e['@id'],
-                                  measure_id=e['measures'][-1]['@id'],
-                                  label=e['label'],
-                                  coord=(float(e['lat']),
-                                         float(e['long'])),
-                                  typical_range=typical_range,
-                                  river=river,
-                                  town=town)
-            stations.append(s)
-        except:
-            # Not all required data on the station was available, so
-            # skip over
-            pass
-
-    return stations
+        return stations
+    except:
+        raise RuntimeError('Failed to build list of stations')
 
 
 def update_water_levels(stations):
