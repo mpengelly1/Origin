@@ -1,6 +1,5 @@
 """Unit test for the station module"""
 
-import pytest
 from floodsystem.station import MonitoringStation
 
 

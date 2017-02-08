@@ -1,6 +1,5 @@
 """Unit test for the stationdata module"""
 
-import pytest
 from floodsystem.stationdata import build_station_list, update_water_levels
 
 

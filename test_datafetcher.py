@@ -1,6 +1,5 @@
 """Unit test for the stationdata module"""
 
-import pytest
 import datetime
 from floodsystem.stationdata import build_station_list, update_water_levels
 from floodsystem.datafetcher import fetch_measure_levels

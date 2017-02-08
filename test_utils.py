@@ -1,6 +1,5 @@
 """Unit test for the utils module"""
 
-import pytest
 import floodsystem.utils
 
 
