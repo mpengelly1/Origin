@@ -138,7 +138,7 @@ def fetch_measure_levels(measure_id, dt):
 
             return dates, levels
     except:
-        return None
+        return dates, 0
 
 def fetch_level_list(stations, dt):
     'Multithreaded function to get level data for a list of station, outputs a list of tuples of id and level data'
@@ -149,6 +149,7 @@ def fetch_level_list(stations, dt):
             level_list0.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 0 finished')
+
         return level_list0
 
     def thread1(state):
@@ -158,6 +159,7 @@ def fetch_level_list(stations, dt):
             level_list1.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 1 finished')
+
         return level_list1
 
     def thread2(state):
@@ -165,8 +167,9 @@ def fetch_level_list(stations, dt):
         level_list2 = list()
         for station in stations[901:1351]: #split workload
             level_list2.append(
-                (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
+                (station.measure_id,fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 2 finished')
+
         return level_list2
 
     def thread3(state):
@@ -176,6 +179,7 @@ def fetch_level_list(stations, dt):
             level_list3.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 3 finished')
+
         return level_list3
 
     que = Queue()
@@ -198,7 +202,6 @@ def fetch_level_list(stations, dt):
     final_list = list()
     while not que.empty():
         result = que.get()
-        final_list.append(result)
-    print(len(final_list))
+        final_list =+ result
 
-    return final_list
+    return final_list[1]
