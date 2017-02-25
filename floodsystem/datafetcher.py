@@ -141,11 +141,11 @@ def fetch_measure_levels(measure_id, dt):
         return None
 
 def fetch_level_list(stations, dt):
-
+    'Multithreaded function to get level data for a list of station, outputs a list of tuples of id and level data'
     def thread0(state):
         print('Thread 0 started')
         level_list0 = list()
-        for station in stations[:501]:
+        for station in stations[:451]: #split workload
             level_list0.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 0 finished')
@@ -154,7 +154,7 @@ def fetch_level_list(stations, dt):
     def thread1(state):
         print('Thread 1 started')
         level_list1 = list()
-        for station in stations[501:1001]:
+        for station in stations[451:901]: #split workload
             level_list1.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 1 finished')
@@ -163,7 +163,7 @@ def fetch_level_list(stations, dt):
     def thread2(state):
         print('Thread 2 started')
         level_list2 = list()
-        for station in stations[1001:1501]:
+        for station in stations[901:1351]: #split workload
             level_list2.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 2 finished')
@@ -172,7 +172,7 @@ def fetch_level_list(stations, dt):
     def thread3(state):
         print('Thread 3 started')
         level_list3 = list()
-        for station in stations[1502:]:
+        for station in stations[1351:]: #split workload
             level_list3.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 3 finished')
