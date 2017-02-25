@@ -10,6 +10,9 @@ import requests
 import dateutil.parser
 import datetime
 
+from threading import Thread
+from queue import Queue
+
 
 def fetch(url):
     """Fetch data from url and return fetched JSON object"""
@@ -124,12 +127,78 @@ def fetch_measure_levels(measure_id, dt):
 
     # Extract dates and levels
     dates, levels = [], []
-    for measure in data['items']:
-        # Convert date-time string to a datetime object
-        d = dateutil.parser.parse(measure['dateTime'])
+    try:
+        for measure in data['items']:
+            # Convert date-time string to a datetime object
+            d = dateutil.parser.parse(measure['dateTime'])
 
-        # Append data
-        dates.append(d)
-        levels.append(measure['value'])
+            # Append data
+            dates.append(d)
+            levels.append(measure['value'])
 
-    return dates, levels
+            return dates, levels
+    except:
+        return None
+
+def fetch_level_list(stations, dt):
+
+    def thread0(state):
+        print('Thread 0 started')
+        level_list0 = list()
+        for station in stations[:501]:
+            level_list0.append(
+                (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
+        print('Thread 0 finished')
+        return level_list0
+
+    def thread1(state):
+        print('Thread 1 started')
+        level_list1 = list()
+        for station in stations[501:1001]:
+            level_list1.append(
+                (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
+        print('Thread 1 finished')
+        return level_list1
+
+    def thread2(state):
+        print('Thread 2 started')
+        level_list2 = list()
+        for station in stations[1001:1501]:
+            level_list2.append(
+                (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
+        print('Thread 2 finished')
+        return level_list2
+
+    def thread3(state):
+        print('Thread 3 started')
+        level_list3 = list()
+        for station in stations[1502:]:
+            level_list3.append(
+                (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
+        print('Thread 3 finished')
+        return level_list3
+
+    que = Queue()
+
+    part_0 = Thread(target=lambda q, arg1: q.put(thread0(arg1)), args=(que, True))
+    part_1 = Thread(target=lambda q, arg1: q.put(thread1(arg1)), args=(que, True))
+    part_2 = Thread(target=lambda q, arg1: q.put(thread2(arg1)), args=(que, True))
+    part_3 = Thread(target=lambda q, arg1: q.put(thread3(arg1)), args=(que, True))
+
+    part_0.start()
+    part_1.start()
+    part_2.start()
+    part_3.start()
+
+    part_0.join()
+    part_1.join()
+    part_2.join()
+    part_3.join()
+
+    final_list = list()
+    while not que.empty():
+        result = que.get()
+        final_list.append(result)
+    print(len(final_list))
+
+    return final_list
