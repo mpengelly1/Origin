@@ -184,6 +184,7 @@ def fetch_level_list(stations, dt):
 
     que = Queue()
 
+    #define threads and add them to queue
     part_0 = Thread(target=lambda q, arg1: q.put(thread0(arg1)), args=(que, True))
     part_1 = Thread(target=lambda q, arg1: q.put(thread1(arg1)), args=(que, True))
     part_2 = Thread(target=lambda q, arg1: q.put(thread2(arg1)), args=(que, True))
@@ -194,14 +195,18 @@ def fetch_level_list(stations, dt):
     part_2.start()
     part_3.start()
 
+    #wait until all threads have finished
     part_0.join()
     part_1.join()
     part_2.join()
     part_3.join()
 
-    final_list = list()
+    #get results from threads
+    results_list = list()
     while not que.empty():
         result = que.get()
-        final_list =+ result
+        results_list.append(result)
 
-    return final_list[1]
+    #merge data from all threads
+    merged_list = results_list[0] + results_list[1] + results_list[2] + results_list[3]
+    return merged_list
