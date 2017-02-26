@@ -27,7 +27,7 @@ def test_stations_level_over_threshold():
     t.latest_level = -2.3
 
     output = flood.stations_level_over_threshold([s, t], 0.5)
-   # print(output)
+    #print(output)
 
     assert ("some station1", 1.0) in output
     assert ("some station2", -2.3) not in output

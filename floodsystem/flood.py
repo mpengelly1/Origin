@@ -1,4 +1,5 @@
 from .utils import sorted_by_key
+from floodsystem import station, flood
 
 
 def stations_level_over_threshold(stations, tol):
@@ -12,9 +13,19 @@ def stations_level_over_threshold(stations, tol):
                 output.append((station.name, station.relative_water_level()))
         except:
             pass
-
-
-
-
     return sorted_by_key(output, 1, False)
+
+
+def stations_highest_rel_level(stations, N):
+    station_list = []
+
+    for station in stations:
+         if station.relative_water_level() is not None:
+            station_list.append((station.name, station.relative_water_level()))
+         else:
+            pass
+
+    ordered_stations_list = sorted_by_key(station_list, 1, False)
+    return ordered_stations_list[-N:]
+
 
