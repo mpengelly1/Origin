@@ -29,5 +29,3 @@ def stations_highest_rel_level(stations, N):
 
     ordered_stations_list = sorted_by_key(station_list, 1, False)
     return ordered_stations_list[-N:]
-
-
