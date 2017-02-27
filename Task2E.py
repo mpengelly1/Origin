@@ -8,5 +8,7 @@ def run():
     # Build list of stations
     stations = build_station_list()
     level_list = fetch_level_list(stations, 1)
-    print(level_list)
+
+    sorted_levels = sorted(level_list, key = lambda x: x[1][1], reverse = True)
+    print(sorted_levels[:5])
 run()

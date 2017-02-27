@@ -145,7 +145,7 @@ def fetch_level_list(stations, dt):
     def thread0(state):
         print('Thread 0 started')
         level_list0 = list()
-        for station in stations[:451]: #split workload
+        for station in stations[:45]: #split workload
             level_list0.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 0 finished')
@@ -155,7 +155,7 @@ def fetch_level_list(stations, dt):
     def thread1(state):
         print('Thread 1 started')
         level_list1 = list()
-        for station in stations[451:901]: #split workload
+        for station in stations[45:90]: #split workload
             level_list1.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 1 finished')
@@ -165,7 +165,7 @@ def fetch_level_list(stations, dt):
     def thread2(state):
         print('Thread 2 started')
         level_list2 = list()
-        for station in stations[901:1351]: #split workload
+        for station in stations[90:135]: #split workload
             level_list2.append(
                 (station.measure_id,fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 2 finished')
@@ -175,7 +175,7 @@ def fetch_level_list(stations, dt):
     def thread3(state):
         print('Thread 3 started')
         level_list3 = list()
-        for station in stations[1351:]: #split workload
+        for station in stations[135:180]: #split workload
             level_list3.append(
                 (station.measure_id, fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days=dt))))
         print('Thread 3 finished')
@@ -211,8 +211,11 @@ def fetch_level_list(stations, dt):
     merged_list = results_list[0] + results_list[1] + results_list[2] + results_list[3]
 
     # remove stations with no level data
+    filtered_list = list()
     for station in merged_list:
-        if (station[1] == None) or (station[0] == None) or (station[1][0] == None) or (station[1][1] == None) or (station[0][1] == None):
-            merged_list.remove(station)
-
-    return merged_list
+        if (station[0] is not None and station[1] is not None):
+            if (station[1][1] is not None) and (station[1][0] is not None):
+                if len(station[1][1]) == 1:
+                    filtered_list.append(station)
+    print(len(filtered_list),'of',len(merged_list),' are valid levels')
+    return filtered_list
