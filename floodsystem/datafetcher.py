@@ -10,6 +10,9 @@ import requests
 import dateutil.parser
 import datetime
 
+from threading import Thread
+from queue import Queue
+
 
 def fetch(url):
     """Fetch data from url and return fetched JSON object"""
