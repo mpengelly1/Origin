@@ -19,6 +19,7 @@ def run():
                                          dt=datetime.timedelta(days=dt))
 
     # Print level history
+    print(levels)
     for date, level in zip(dates, levels):
         print(date, level)
 
