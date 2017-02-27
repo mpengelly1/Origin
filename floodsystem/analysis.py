@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import matplotlib
 
 def polyfit(dates, levels, p):
@@ -11,15 +12,9 @@ def polyfit(dates, levels, p):
     p_coeff = np.polyfit(t - t[0], levels, p)
 
     # Convert coefficient into a polynomial that can be evaluated
-
     poly = np.poly1d(p_coeff)
     matplotlib.pyplot.plot(t, levels, '.')
 
     # Plot polynomial fit at 30 points along interval
     t1 = np.linspace(t[0], t[-1], 30)
-    plt.plot(t1, poly(t1))
-
-    # Display plot
-    plt.show()
-
-polyfit(dates, levels, p)
+    plt.plot(t1, poly(t1-t[0]))
