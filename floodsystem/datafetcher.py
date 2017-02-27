@@ -209,4 +209,10 @@ def fetch_level_list(stations, dt):
 
     #merge data from all threads
     merged_list = results_list[0] + results_list[1] + results_list[2] + results_list[3]
+
+    # remove stations with no level data
+    for station in merged_list:
+        if (station[1] == None) or (station[0] == None) or (station[1][0] == None) or (station[1][1] == None) or (station[0][1] == None):
+            merged_list.remove(station)
+
     return merged_list
