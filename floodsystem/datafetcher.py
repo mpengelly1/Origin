@@ -127,7 +127,6 @@ def fetch_measure_levels(measure_id, dt):
 
     # Extract dates and levels
     dates, levels = [], []
-
     for measure in data['items']:
         # Convert date-time string to a datetime object
         d = dateutil.parser.parse(measure['dateTime'])
@@ -136,7 +135,8 @@ def fetch_measure_levels(measure_id, dt):
         dates.append(d)
         levels.append(measure['value'])
 
-        return dates, levels
+    return dates, levels
+
 
 def fetch_level_list(stations, dt):
     'Multithreaded function to get level data for a list of station, outputs a list of tuples of id and level data'
