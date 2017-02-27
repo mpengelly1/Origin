@@ -8,16 +8,14 @@ def run():
     # Build list of stations
     stations = build_station_list()
 
-    #get level data for all stations
-    #level_list = fetch_level_list(stations, 1)
-
-    #sorted_levels = sorted(level_list, key = lambda x: x[1][1], reverse = True)
-    #print(sorted_levels[:5])
+    #generate list of levels, filtering out 'None' levels
     update_water_levels(stations)
     level_list = [(station,station.latest_level) for station in stations if station.latest_level is not None]
 
+    #sort by current level
     level_list.sort(key = lambda x: x[1], reverse = True)
 
+    #plot top 5 stations
     plot_data = list()
     dt = 10
     for station in level_list[:5]:
