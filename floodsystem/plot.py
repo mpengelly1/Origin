@@ -1,8 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from datetime import datetime, timedelta
 
 def plot_water_levels(station, dates, levels):
+     'Plots water level against time. Accepts dates and levels as a list'
 
      # Plot
      plt.plot(dates, levels)
