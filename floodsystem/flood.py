@@ -1,6 +1,4 @@
-from .utils import sorted_by_key
-from floodsystem import station, flood
-
+from utils import sorted_by_key
 
 def stations_level_over_threshold(stations, tol):
     output = []
