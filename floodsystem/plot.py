@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from floodsystem.analysis import polyfit
+import numpy as np
 
 def plot_water_levels(station, dates, levels, display = True):
      'Plots water level against time. Accepts dates and levels as a list'
@@ -23,4 +24,6 @@ def plot_water_level_with_fit(station, dates, levels, p):
 
      plot_water_levels( station , dates , levels, False)
      polyfit(dates,levels,p)
+     plt.plot(dates,np.linspace(1,1,len(dates))*station.typical_range[0])
+     plt.plot(dates, np.linspace(1, 1, len(dates)) * station.typical_range[1])
      plt.show()

@@ -2,7 +2,7 @@ from floodsystem.flood import risk_level
 from floodsystem.stationdata import build_station_list
 from floodsystem.datafetcher import fetch_measure_levels
 from datetime import timedelta, datetime
-from plot import plot_water_level_with_fit
+from floodsystem.plot import plot_water_level_with_fit
 
 
 def run():

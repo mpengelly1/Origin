@@ -1,6 +1,6 @@
-from utils import sorted_by_key
-from stationdata import update_water_levels
-from datafetcher import fetch_measure_levels
+from floodsystem.utils import sorted_by_key
+from floodsystem.stationdata import update_water_levels
+from floodsystem.datafetcher import fetch_measure_levels
 from datetime import datetime, timedelta
 import matplotlib.dates
 import matplotlib.pyplot as plt
@@ -8,6 +8,8 @@ import numpy as np
 
 
 def stations_level_over_threshold(stations, tol):
+    """returns a list of stations with their relative water level if the relative water level is over the tolerance.
+    Stations is a list of stations, tol is a float."""
     output = []
 
     for station in stations:
@@ -24,6 +26,8 @@ def stations_level_over_threshold(stations, tol):
 
 
 def stations_highest_rel_level(stations, N):
+    """returns a list of the top N stations with the highest relative water levels. Stations is list of stations, N is
+    number of stations to display"""
     station_list = []
 
     for station in stations:
