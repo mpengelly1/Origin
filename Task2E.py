@@ -11,7 +11,7 @@ def run():
 
     #generate list of levels, filtering out 'None' levels
     update_water_levels(stations)
-    level_list = [(station, station.latest_level) for station in stations if station.latest_level is not None]
+    level_list = [(station, station.relative_water_level()) for station in stations if station.relative_water_level() is not None]
 
     #sort by current level
     level_list.sort(key=lambda x: x[1], reverse=True)
