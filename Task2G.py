@@ -15,7 +15,7 @@ def run():
 
     #Print top 10 most at risk
     for station in risk_list[:10]:
-        print(station[0].name, station[2])
+        print(station[0].town, station[2])
 
     #Plot most at risk
     dt = 3
