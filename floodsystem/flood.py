@@ -61,7 +61,6 @@ def risk_level(stations , anxiety = 1):
                 dates.remove(dates[levels.index(level)])
                 levels.remove(level)
 
-        # Find rate of change
         try:
 
             # Find coefficients of best-fit polynomial
@@ -70,39 +69,34 @@ def risk_level(stations , anxiety = 1):
 
             # Convert coefficient into a polynomial that can be evaluated
             poly = np.poly1d(p_coeff)
-            plt.plot(t, levels, '.')
-        except:
-            print('polyfit failed for ',station.name)
-            rate_of_change = 0
-            continue
 
-
-        derivative = poly.deriv()
-        try:
+            #calculate current gradient of polyfit
+            derivative = poly.deriv()
             rate_of_change = derivative(t[-1])
+
+            #Calculate risk factor, limiting derivative factor
+            if -4 <= rate_of_change <= 4:
+                risk = anxiety*(station.relative_water_level()) + 0.25*rate_of_change
+            elif rate_of_change < -4:
+                risk = anxiety*(station.relative_water_level() - 1)
+            else:
+                risk = anxiety*(station.relative_water_level() + 1)
+
+            #sort stations into risk categories
+            if risk < 1:
+                category = 'low'
+            elif 1 <= risk < 2:
+                category = 'moderate'
+            elif 2 <= risk < 3:
+                category = 'high'
+            else:
+                category = 'severe'
+
+            risk_list.append((station, risk, category))
+
         except:
-            rate_of_change = 0
+            print('analysis failed for', station.name)
             continue
 
-        #Calculate risk factor, limiting derivative factor
-        if -4 <= rate_of_change <= 4:
-            risk = anxiety*(station.relative_water_level()) + 0.25*rate_of_change
-        elif rate_of_change < -4:
-            risk = anxiety*(station.relative_water_level() - 1)
-        else:
-            risk = anxiety*(station.relative_water_level() + 1)
-
-        #sort stations into risk categories
-        if risk < 1:
-            category = 'low'
-        elif 1 <= risk < 2:
-            category = 'moderate'
-        elif 2 <= risk < 3:
-            category = 'high'
-        else:
-            category = 'severe'
-
-        risk_list.append((station.name, risk, category))
-
-    risk_list.sort(key = lambda x: x[1], reverse=True)
+    risk_list.sort(key=lambda x: x[1], reverse=True)
     return risk_list
