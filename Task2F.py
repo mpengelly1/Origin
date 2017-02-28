@@ -2,6 +2,7 @@ from floodsystem.stationdata import build_station_list,update_water_levels
 from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.plot import plot_water_level_with_fit
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
 
 
@@ -11,7 +12,7 @@ def run():
 
     #generate list of levels, filtering out 'None' levels
     update_water_levels(stations)
-    level_list = [(station ,station.latest_level) for station in stations if station.latest_level is not None]
+    level_list = [(station ,station.relative_water_level()) for station in stations if station.relative_water_level() is not None]
 
     #sort by current level
     level_list.sort(key=lambda x: x[1], reverse=True)
@@ -19,8 +20,8 @@ def run():
     #plot top 5 stations
     dt = 2   #get 2 days of data
 
-
-    for station in level_list[:5]:
+    N=5
+    for station in level_list[:N]:
         dates, levels = fetch_measure_levels(station[0].measure_id, dt=timedelta(days=dt))
 
         #Remove None values
@@ -35,7 +36,11 @@ def run():
                 levels.remove(level)
 
         #plot
-        plot_water_level_with_fit(station[0], dates, levels, 4)
+        try:
+            plot_water_level_with_fit(station[0], dates, levels, 4)
+        except:
+            N+=1
+            continue
 
 
     plot_water_level_with_fit(stations[0],dates,levels,4)
