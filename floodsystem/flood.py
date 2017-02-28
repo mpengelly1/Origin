@@ -32,8 +32,8 @@ def stations_highest_rel_level(stations, N):
          else:
             pass
 
-    ordered_stations_list = sorted_by_key(station_list, 1, False)
-    return ordered_stations_list[-N:]
+    ordered_stations_list = sorted(station_list, key=lambda x: x[1], reverse=True)
+    return ordered_stations_list[:N]
 
 def risk_level(stations , anxiety = 1):
     """prints stations in order of decreasing risk, categorises based on current relative level,
