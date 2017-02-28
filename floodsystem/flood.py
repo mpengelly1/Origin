@@ -95,7 +95,7 @@ def risk_level(stations , anxiety = 1):
             risk_list.append((station, risk, category))
 
         except:
-            print('analysis failed for', station.name)
+            print('insufficient data for', station.name)
             continue
 
     risk_list.sort(key=lambda x: x[1], reverse=True)
